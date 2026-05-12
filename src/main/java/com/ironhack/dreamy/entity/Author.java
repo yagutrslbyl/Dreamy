@@ -1,0 +1,26 @@
+package com.ironhack.dreamy.entity;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+
+@Entity
+@Table(name = "authors")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Author {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank(message = "Full name is required")
+    @Column(nullable = false)
+    private String fullName;
+
+    @Column(columnDefinition = "TEXT")
+    private String biography;
+}
