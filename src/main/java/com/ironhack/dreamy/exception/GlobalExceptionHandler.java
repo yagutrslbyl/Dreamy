@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({BookNotFoundException.class, AuthorNotFoundException.class})
+    @ExceptionHandler({BookNotFoundException.class, AuthorNotFoundException.class, CategoryNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleNotFound(RuntimeException ex, HttpServletRequest request) {
         return buildErrorResponse(HttpStatus.NOT_FOUND, ex.getMessage(), request);
     }
