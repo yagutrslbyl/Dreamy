@@ -1,7 +1,7 @@
 package com.ironhack.dreamy.mapper;
 
-import com.ironhack.dreamy.dto.BookRequest;
-import com.ironhack.dreamy.dto.BookResponse;
+import com.ironhack.dreamy.dto.request.BookRequest;
+import com.ironhack.dreamy.dto.response.BookResponse;
 import com.ironhack.dreamy.entity.Book;
 import org.springframework.stereotype.Component;
 
