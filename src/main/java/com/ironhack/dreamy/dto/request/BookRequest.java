@@ -1,4 +1,4 @@
-package com.ironhack.dreamy.dto;
+package com.ironhack.dreamy.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

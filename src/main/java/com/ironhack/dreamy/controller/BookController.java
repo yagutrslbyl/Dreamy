@@ -1,6 +1,6 @@
 package com.ironhack.dreamy.controller;
-import com.ironhack.dreamy.dto.BookRequest;
-import com.ironhack.dreamy.dto.BookResponse;
+import com.ironhack.dreamy.dto.request.BookRequest;
+import com.ironhack.dreamy.dto.response.BookResponse;
 import com.ironhack.dreamy.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

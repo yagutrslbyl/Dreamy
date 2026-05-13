@@ -1,6 +1,6 @@
 package com.ironhack.dreamy.service;
-import com.ironhack.dreamy.dto.BookRequest;
-import com.ironhack.dreamy.dto.BookResponse;
+import com.ironhack.dreamy.dto.request.BookRequest;
+import com.ironhack.dreamy.dto.response.BookResponse;
 import com.ironhack.dreamy.entity.Book;
 import com.ironhack.dreamy.mapper.BookMapper;
 import com.ironhack.dreamy.repository.AuthorRepository;
