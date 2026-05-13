@@ -8,6 +8,7 @@ public class DreamyApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DreamyApplication.class, args);
+        System.out.println("Dreamy Application started");
     }
 
 }
