@@ -19,12 +19,13 @@ public class BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
     private final CategoryRepository categoryRepository;
+    private final BookMapper bookMapper;
 
     public BookResponse createBook(BookRequest request) {
         if (bookRepository.existsByIsbn(request.getIsbn())) {
             throw new RuntimeException("Book with ISBN " + request.getIsbn() + " already exists!");
         }
-        Book book = BookMapper.toEntity(request);
+        Book book = bookMapper.toEntity(request);
 
         book.setAuthor(authorRepository.findById(request.getAuthorId())
                 .orElseThrow(() -> new RuntimeException("Author not found")));
@@ -32,9 +33,7 @@ public class BookService {
         book.setCategory(categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found")));
 
-        Book savedBook = bookRepository.save(book);
-
-        return BookMapper.toResponse(savedBook);
+        return bookMapper.toResponse(bookRepository.save(book));
     }
 
     public BookResponse updateBook(Long id, BookUpdateRequest request) {
@@ -50,20 +49,20 @@ public class BookService {
         existingBook.setCategory(categoryRepository.findById(request.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found")));
 
-        return BookMapper.toResponse(bookRepository.save(existingBook));
+        return bookMapper.toResponse(bookRepository.save(existingBook));
     }
 
     public List<BookResponse> getAllBooks() {
         return bookRepository.findAll()
                 .stream()
-                .map(BookMapper::toResponse)
+                .map(bookMapper::toResponse)
                 .collect(Collectors.toList());
     }
 
     public BookResponse getBookById(Long id) {
         Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found with id: " + id));
-        return BookMapper.toResponse(book);
+        return bookMapper.toResponse(book);
     }
 
     public void deleteBook(Long id) {
