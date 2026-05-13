@@ -1,6 +1,9 @@
 package com.ironhack.dreamy.service;
 
+import com.ironhack.dreamy.dto.request.AuthorRequest;
+import com.ironhack.dreamy.dto.response.AuthorResponse;
 import com.ironhack.dreamy.entity.Author;
+import com.ironhack.dreamy.mapper.AuthorMapper;
 import com.ironhack.dreamy.repository.AuthorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,34 +15,21 @@ import java.util.List;
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
+    private final AuthorMapper authorMapper;
 
-    public Author createAuthor(Author author) {
-        return authorRepository.save(author);
+    public AuthorResponse createAuthor(AuthorRequest request) {
+
+        Author author = authorMapper.toEntity(request);
+
+        Author savedAuthor = authorRepository.save(author);
+
+        return authorMapper.toResponse(savedAuthor);
     }
 
-    public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
-    }
+    public List<AuthorResponse> getAllAuthors() {
 
-    public Author getAuthorById(Long id) {
-        return authorRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Author not found with id: " + id));
-    }
-
-    public List<Author> searchAuthorsByName(String fullName) {
-        return authorRepository.findByFullNameContainingIgnoreCase(fullName);
-    }
-
-    public Author updateAuthor(Long id, Author updatedAuthor) {
-        Author author = getAuthorById(id);
-
-        author.setFullName(updatedAuthor.getFullName());
-        author.setBiography(updatedAuthor.getBiography());
-
-        return authorRepository.save(author);
-    }
-
-    public void deleteAuthor(Long id) {
-        authorRepository.deleteById(id);
+        return authorRepository.findAll().stream()
+                .map(authorMapper::toResponse)
+                .toList();
     }
 }
