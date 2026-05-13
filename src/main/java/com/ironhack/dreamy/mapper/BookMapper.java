@@ -7,8 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BookMapper {
-
-    public static Book toEntity(BookRequest request) {
+    public Book toEntity(BookRequest request) {
         if (request == null) return null;
 
         Book book = new Book();
@@ -18,7 +17,7 @@ public class BookMapper {
         return book;
     }
 
-    public static BookResponse toResponse(Book book) {
+    public BookResponse toResponse(Book book) {
         if (book == null) return null;
 
         BookResponse response = new BookResponse();
@@ -36,4 +35,5 @@ public class BookMapper {
 
         return response;
     }
+
 }
