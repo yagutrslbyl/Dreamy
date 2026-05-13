@@ -1,5 +1,6 @@
 package com.ironhack.dreamy.service;
 import com.ironhack.dreamy.dto.request.BookRequest;
+import com.ironhack.dreamy.dto.request.BookUpdateRequest;
 import com.ironhack.dreamy.dto.response.BookResponse;
 import com.ironhack.dreamy.entity.Book;
 import com.ironhack.dreamy.mapper.BookMapper;
@@ -36,12 +37,11 @@ public class BookService {
         return BookMapper.toResponse(savedBook);
     }
 
-    public BookResponse updateBook(Long id, BookRequest request) {
+    public BookResponse updateBook(Long id, BookUpdateRequest request) {
         Book existingBook = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
         existingBook.setTitle(request.getTitle());
-        existingBook.setIsbn(request.getIsbn());
         existingBook.setStockQuantity(request.getStockQuantity());
 
         existingBook.setAuthor(authorRepository.findById(request.getAuthorId())
