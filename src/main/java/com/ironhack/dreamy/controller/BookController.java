@@ -1,6 +1,7 @@
 package com.ironhack.dreamy.controller;
 
 import com.ironhack.dreamy.dto.request.BookRequest;
+import com.ironhack.dreamy.dto.request.BookUpdateRequest;
 import com.ironhack.dreamy.dto.response.BookResponse;
 import com.ironhack.dreamy.service.BookService;
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookResponse> updateBook(@PathVariable Long id, @RequestBody @Valid BookRequest request) {
+    public ResponseEntity<BookResponse> updateBook(@PathVariable Long id, @RequestBody @Valid BookUpdateRequest request) {
         return ResponseEntity.ok(bookService.updateBook(id, request));
     }
 
