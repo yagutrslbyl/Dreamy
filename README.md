@@ -1,164 +1,248 @@
-# 📚 DREAMY — Library Management System
+# Dreamy 📚
 
-> *"Building a bridge between your library and your dreams."*
+A production-ready Spring Boot REST API for managing a digital bookstore — authors, categories, and books. Built with Java 17, MySQL (local), PostgreSQL (production), and deployed on Render.
 
-A modern RESTful API backend for managing books, authors, and categories — built with Java 17 and Spring Boot.
+🚀 **Live Demo:** https://dreamy-h82a.onrender.com
 
----
-
-## 🚀 Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Backend | Java 17, Spring Boot |
-| ORM | JPA / Hibernate |
-| Database (Dev/Prod) | MySQL |
-| Database (Test) | H2 (in-memory) |
-| Containerization | Docker (multi-stage Dockerfile) |
-| CI/CD | GitHub Actions |
-| Deployment | Render Cloud |
+📋 **Project Board:** [Trello](https://trello.com/b/nN19nN3i/devops-project)
 
 ---
 
-## 🏗️ Architecture
+## API Reference
 
-The project follows a clean layered architecture:
+Base URL: `/api`
 
+All requests and responses use `Content-Type: application/json`.
+
+---
+
+### Authors
+
+#### Get All Authors
+`GET /api/authors`
+
+**Responses:**
+- `200 OK` — returns list of authors as JSON
+
+#### Create an Author
+`POST /api/authors`
+
+**Request body:**
+```json
+{
+  "fullName": "George Orwell",
+  "biography": "English novelist famous for 1984 and Animal Farm."
+}
 ```
-Controller Layer  →  Service Layer  →  Repository Layer  →  Database
-       ↕                  ↕
-      DTOs          Business Logic & Validation
+
+**Responses:**
+- `201 Created` — returns the created author as JSON
+- `400 Bad Request` — validation failed
+- `409 Conflict` — author with that name already exists
+
+#### Delete an Author
+`DELETE /api/authors/{id}`
+
+**Responses:**
+- `204 No Content` — author deleted successfully
+- `404 Not Found` — author with that ID does not exist
+
+---
+
+### Categories
+
+#### Get All Categories
+`GET /api/categories`
+
+**Responses:**
+- `200 OK` — returns list of categories as JSON
+
+#### Create a Category
+`POST /api/categories`
+
+**Request body:**
+```json
+{
+  "name": "Fantasy"
+}
 ```
 
-**Key Patterns Used:**
-- DTO Pattern (Request / Response separation)
-- Repository Pattern
-- Service Layer
-- Global Exception Handling
+**Responses:**
+- `201 Created` — returns the created category as JSON
+- `400 Bad Request` — validation failed
+- `409 Conflict` — category with that name already exists
+
+#### Delete a Category
+`DELETE /api/categories/{id}`
+
+**Responses:**
+- `204 No Content` — category deleted successfully
+- `404 Not Found` — category with that ID does not exist
 
 ---
 
-## 📦 Entities
+### Books
 
-### Book
-| Field | Type | Constraint |
-|---|---|---|
-| id | Long | Primary Key, Auto-increment |
-| title | String | Not Null, Min 2 chars |
-| isbn | String | Unique, Not Null |
-| stockQuantity | Integer | Min 0 |
-| author | Author | Many-to-One |
-| category | Category | Many-to-One |
+#### Get All Books
+`GET /api/books`
 
-### Author
-| Field | Type | Constraint |
-|---|---|---|
-| id | Long | Primary Key |
-| fullName | String | Not Null |
-| biography | String | Optional |
+**Responses:**
+- `200 OK` — returns list of all books as JSON
 
-### Category
-| Field | Type | Constraint |
-|---|---|---|
-| id | Long | Primary Key |
-| name | String | Unique (e.g. Fiction, Science) |
+#### Get a Book by ID
+`GET /api/books/{id}`
 
----
+**Responses:**
+- `200 OK` — returns the book as JSON
+- `404 Not Found` — book with that ID does not exist
 
-## 🔌 API Endpoints
+#### Create a Book
+`POST /api/books`
 
-### Books — `/api/books`
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/books` | Create a new book |
-| `GET` | `/api/books` | List all books |
-| `GET` | `/api/books/{id}` | Get book by ID |
-| `PUT` | `/api/books/{id}` | Update book |
-| `DELETE` | `/api/books/{id}` | Delete book |
+**Request body:**
+```json
+{
+  "title": "1984",
+  "isbn": "978-0-452-28423-4",
+  "stockQuantity": 85,
+  "authorId": 1,
+  "categoryId": 2
+}
+```
 
-### Authors — `/api/authors`
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/authors` | Create a new author |
-| `GET` | `/api/authors` | List all authors |
-| `GET` | `/api/authors/{id}` | Get author by ID |
-| `PUT` | `/api/authors/{id}` | Update author |
-| `DELETE` | `/api/authors/{id}` | Delete author |
+**Responses:**
+- `201 Created` — returns the created book as JSON
+- `400 Bad Request` — validation failed
+- `409 Conflict` — book with that ISBN already exists
 
-### Categories — `/api/categories`
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/categories` | Create a new category |
-| `GET` | `/api/categories` | List all categories |
-| `GET` | `/api/categories/{id}` | Get category by ID |
-| `PUT` | `/api/categories/{id}` | Update category |
-| `DELETE` | `/api/categories/{id}` | Delete category |
+#### Update a Book
+`PUT /api/books/{id}`
 
----
+**Request body:**
+```json
+{
+  "title": "Nineteen Eighty-Four",
+  "stockQuantity": 100,
+  "authorId": 1,
+  "categoryId": 2
+}
+```
 
-## ⚠️ Error Handling
+**Responses:**
+- `200 OK` — returns the updated book as JSON
+- `400 Bad Request` — validation failed
+- `404 Not Found` — book with that ID does not exist
 
-All errors return a standardized JSON response via `ErrorResponse`.
+#### Delete a Book
+`DELETE /api/books/{id}`
 
-| Exception | HTTP Status | Trigger |
-|---|---|---|
-| `BookNotFoundException` | `404 Not Found` | Book ID does not exist |
-| `AuthorNotFoundException` | `404 Not Found` | Author ID is missing |
-| `DuplicateIsbnException` | `409 Conflict` | ISBN already exists |
-| `InvalidDataException` | `400 Bad Request` | Validation failure (null fields, negative stock, etc.) |
+**Responses:**
+- `204 No Content` — book deleted successfully
+- `404 Not Found` — book with that ID does not exist
 
 ---
 
-## ▶️ Running the Project
+## Local Development (Docker)
 
 ### Prerequisites
-- Java 17+
-- Maven
-- Docker & Docker Compose
+- Docker installed
 
-### Run locally with Docker Compose
+### Run locally
+
+Docker Compose starts both MySQL and the app with a single command:
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-org/dreamy-api.git
-cd dreamy-api
-
-# Start the application and MySQL
-docker-compose up --build
+git clone https://github.com/yagutrslbyl/Dreamy.git
+cd dreamy
+docker compose up --build
 ```
 
-The API will be available at: `http://localhost:8080`
+The API will be available at `http://localhost:8080`.
 
-### Run tests (H2 in-memory)
+### Stop everything
 
 ```bash
-mvn test
+docker compose down
 ```
 
 ---
 
-## ⚙️ Environment Profiles
+## Spring Profiles
 
-| Profile | Config File | Database |
-|---|---|---|
-| Test | `application-test.properties` | H2 (in-memory) |
-| Production | `application-prod.properties` | MySQL (Render Cloud) |
-
----
-
-## 👥 Team
-
-| Member | Role | Responsibilities |
-|---|---|---|
-| **Yaqut** | Lead & Core | GitHub repo setup, project scaffolding, Author module, Docker Compose |
-| **Shebnem** | Entity & Quality | Book module (relations), Global exception handling, Dockerfile |
-| **Qurbanali** | Test & Logic | Category module, H2 integration tests, GitHub Actions CI, README |
+| Profile | Database | Used for |
+|---------|----------|----------|
+| default | MySQL on localhost:3306 | Local development |
+| test | H2 in-memory | Integration tests |
+| prod | PostgreSQL (Render) | Cloud deployment |
 
 ---
 
-## 📝 Development Notes
+## CI/CD
 
-- **DTOs are mandatory** — never expose JPA entities directly in controller responses.
-- **Validation** is enforced at the entry point using `@Valid`, `@NotBlank`, and `@Size`.
-- **ISBN uniqueness** is validated at the service layer before persistence.
-- **Stock quantity** cannot be negative (minimum value: 0).
+GitHub Actions runs on every push or PR to `main`:
+
+1. Checkout code
+2. Set up Java 17
+3. Cache Maven dependencies
+4. Run `mvn clean verify` (builds + runs all tests with H2)
+
+The pipeline status is shown as a badge on the repo.
+
+---
+
+## Deployment (Render)
+
+### Step 1 — Create a PostgreSQL Database
+
+1. Go to [dashboard.render.com](https://dashboard.render.com)
+2. Click "New +" → select **PostgreSQL**
+3. Configure:
+
+| Field | Value |
+|-------|-------|
+| Name | dreamy-db |
+| Region | e.g. Frankfurt (EU Central) — note it for Step 2 |
+| PostgreSQL Version | 16 |
+
+4. Click "Create Database" and wait until status is **Available**
+5. Copy the **Internal Database URL** — you'll need it in Step 2
+
+> ⚠️ **Important:** the database and the web service must be deployed to the **same region**. Render's internal networking only works within a region.
+
+### Step 2 — Deploy the Web Service
+
+1. Click "New +" → select **Web Service**
+2. Connect your GitHub account and select your repository
+3. Configure:
+
+| Field | Value |
+|-------|-------|
+| Name | dreamy |
+| Region | Same as your database |
+| Environment | Docker |
+| Dockerfile Path | ./Dockerfile |
+
+4. Under the **"Environment"** tab, add:
+
+| Key | Value |
+|-----|-------|
+| DATABASE_URL | from Render DB |
+| DB_USERNAME | from Render DB |
+| DB_PASSWORD | from Render DB |
+| SPRING_PROFILES_ACTIVE | prod |
+
+5. Click "Create Web Service"
+
+### Auto-deploys
+
+Every push to `main` triggers a new build and deploy automatically.
+
+---
+
+## Contributors
+
+| Name | GitHub |
+|------|--------|
+| Yagut Resulbəyli | [@yagutrslbyl](https://github.com/yagutrslbyl) |
+| Qurbanəli | [@gurban200OK](https://github.com/gurban200OK) |
+| Şəbnəm | [@shebnem-m](https://github.com/shebnem-m) |
