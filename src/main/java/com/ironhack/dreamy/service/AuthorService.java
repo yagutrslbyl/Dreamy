@@ -3,6 +3,7 @@ package com.ironhack.dreamy.service;
 import com.ironhack.dreamy.dto.request.AuthorRequest;
 import com.ironhack.dreamy.dto.response.AuthorResponse;
 import com.ironhack.dreamy.entity.Author;
+import com.ironhack.dreamy.exception.AuthorNotFoundException;
 import com.ironhack.dreamy.exception.DuplicateResourceException;
 import com.ironhack.dreamy.mapper.AuthorMapper;
 import com.ironhack.dreamy.repository.AuthorRepository;
@@ -36,5 +37,12 @@ public class AuthorService {
         return authorRepository.findAll().stream()
                 .map(authorMapper::toResponse)
                 .toList();
+    }
+
+    public void deleteAuthor(Long id) {
+        if (!authorRepository.existsById(id)) {
+            throw new AuthorNotFoundException("Author not found with id: " + id);
+        }
+        authorRepository.deleteById(id);
     }
 }
