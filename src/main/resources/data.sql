@@ -1,8 +1,9 @@
 -- Insert Authors
-INSERT INTO authors (name) VALUES ('J.K. Rowling');
-INSERT INTO authors (name) VALUES ('George Orwell');
-INSERT INTO authors (name) VALUES ('F. Scott Fitzgerald');
-INSERT INTO authors (name) VALUES ('J.R.R. Tolkien');
+INSERT INTO authors (full_name, biography) VALUES ('J.K. Rowling','British author best known for the Harry Potter fantasy series.');
+INSERT INTO authors (full_name, biography) VALUES ('George Orwell', 'English novelist famous for 1984 and Animal Farm.');
+INSERT INTO authors (full_name, biography) VALUES ('F. Scott Fitzgerald', 'American writer known for his novel The Great Gatsby.');
+INSERT INTO authors (full_name, biography) VALUES ('J.R.R. Tolkien', 'English writer and author of The Hobbit and The Lord of the Rings.');
+
 
 -- Insert Categories
 INSERT INTO categories (name) VALUES ('Fantasy');
