@@ -3,6 +3,7 @@ package com.ironhack.dreamy.service;
 import com.ironhack.dreamy.dto.request.CategoryRequest;
 import com.ironhack.dreamy.dto.response.CategoryResponse;
 import com.ironhack.dreamy.entity.Category;
+import com.ironhack.dreamy.exception.DuplicateResourceException;
 import com.ironhack.dreamy.mapper.CategoryMapper;
 import com.ironhack.dreamy.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,11 @@ public class CategoryService {
     private final CategoryMapper categoryMapper;
 
     public CategoryResponse createCategory(CategoryRequest request) {
+
+        if (categoryRepository.existsByNameIgnoreCase(request.getName())) {
+            throw new DuplicateResourceException("Category already exists");
+        }
+
         Category category = categoryMapper.toEntity(request);
 
         Category savedCategory = categoryRepository.save(category);
