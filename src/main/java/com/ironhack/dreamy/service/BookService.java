@@ -6,7 +6,7 @@ import com.ironhack.dreamy.entity.Book;
 import com.ironhack.dreamy.exception.AuthorNotFoundException;
 import com.ironhack.dreamy.exception.BookNotFoundException;
 import com.ironhack.dreamy.exception.CategoryNotFoundException;
-import com.ironhack.dreamy.exception.DuplicateIsbnException;
+import com.ironhack.dreamy.exception.DuplicateResourceException;
 import com.ironhack.dreamy.mapper.BookMapper;
 import com.ironhack.dreamy.repository.AuthorRepository;
 import com.ironhack.dreamy.repository.BookRepository;
@@ -14,7 +14,6 @@ import com.ironhack.dreamy.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +26,7 @@ public class BookService {
 
     public BookResponse createBook(BookRequest request) {
         if (bookRepository.existsByIsbn(request.getIsbn())) {
-            throw new DuplicateIsbnException("Book with ISBN " + request.getIsbn() + " already exists!");
+            throw new DuplicateResourceException("Book with ISBN " + request.getIsbn() + " already exists!");
         }
         Book book = bookMapper.toEntity(request);
 
@@ -60,7 +59,7 @@ public class BookService {
         return bookRepository.findAll()
                 .stream()
                 .map(bookMapper::toResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public BookResponse getBookById(Long id) {
