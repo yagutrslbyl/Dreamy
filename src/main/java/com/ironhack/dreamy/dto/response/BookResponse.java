@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,4 +18,5 @@ public class BookResponse {
     private int stockQuantity;
     private String authorName;
     private String categoryName;
+    private LocalDateTime createdAt;
 }

@@ -15,6 +15,7 @@ public class AuthorMapper {
                 .id(author.getId())
                 .fullName(author.getFullName())
                 .biography(author.getBiography())
+                .createdAt(author.getCreatedAt())
                 .build();
     }
 

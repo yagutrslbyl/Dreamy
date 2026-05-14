@@ -33,6 +33,8 @@ public class BookMapper {
             response.setCategoryName(book.getCategory().getName());
         }
 
+        response.setCreatedAt(book.getCreatedAt());
+
         return response;
     }
 
