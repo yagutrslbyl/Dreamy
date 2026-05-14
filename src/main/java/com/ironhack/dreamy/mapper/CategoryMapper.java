@@ -13,7 +13,6 @@ public class CategoryMapper {
         return CategoryResponse.builder()
                 .id(category.getId())
                 .name(category.getName())
-                .createdAt(category.getCreatedAt())
                 .build();
     }
 

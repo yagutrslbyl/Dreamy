@@ -23,12 +23,4 @@ public class Category {
     @Size(min = 3, max = 50, message = "Category name must be between 3 and 50 characters")
     @Column(nullable = false, unique = true)
     private String name;
-
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDateTime.now();
-    }
 }
