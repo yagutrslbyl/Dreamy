@@ -18,5 +18,4 @@ public class BookResponse {
     private int stockQuantity;
     private String authorName;
     private String categoryName;
-    private LocalDateTime createdAt;
 }

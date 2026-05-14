@@ -16,5 +16,4 @@ public class AuthorResponse {
     private Long id;
     private String fullName;
     private String biography;
-    private LocalDateTime createdAt;
 }
