@@ -13,10 +13,11 @@ public class CategoryMapper {
         return CategoryResponse.builder()
                 .id(category.getId())
                 .name(category.getName())
+                .createdAt(category.getCreatedAt())
                 .build();
     }
 
-    // Request DTO -> Entity
+
     public Category toEntity(CategoryRequest request) {
         if (request == null) return null;
 
