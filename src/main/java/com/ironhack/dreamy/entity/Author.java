@@ -25,4 +25,12 @@ public class Author {
 
     @Column(columnDefinition = "TEXT")
     private String biography;
+
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
