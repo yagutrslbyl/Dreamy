@@ -39,4 +39,12 @@ public class Book {
     @ManyToOne
     @JoinColumn(name="category_id")
     private Category category;
+
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
+    }
 }
